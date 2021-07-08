@@ -1,5 +1,79 @@
 <html>
 	<header>
+<link href="https://unpkg.com/@pqina/flip/dist/flip.min.css" rel="stylesheet">
+<script src="https://unpkg.com/@pqina/flip/dist/flip.min.js"></script>
+<style>
+.tick {
+  font-size:1rem; white-space:nowrap; font-family:arial,sans-serif;
+}
+
+.tick-flip,.tick-text-inline {
+  font-size:2.5em;
+}
+
+.tick-label {
+  margin-top:1em;font-size:1em;
+}
+
+.tick-char {
+  width:1.5em;
+}
+
+.tick-text-inline {
+  display:inline-block;text-align:center;min-width:1em;
+}
+
+.tick-text-inline+.tick-text-inline {
+  margin-left:-.325em;
+}
+
+.tick-group {
+  margin:0 .5em;text-align:center;
+}
+
+body {
+   background-color: rgb(0, 0, 0) !important; 
+}
+
+.tick-text-inline {
+   color: rgb(90, 93, 99) !important; 
+}
+
+.tick-label {
+   color: rgb(90, 93, 99) !important; 
+}
+
+.tick-flip-panel {
+   color: rgb(255, 255, 255) !important; 
+}
+
+.tick-flip {
+   font-family: !important; 
+}
+
+.tick-flip-panel-text-wrapper {
+   line-height: 1.45 !important; 
+}
+
+.tick-flip-panel {
+   background-color: rgb(59, 61, 59) !important; 
+}
+
+.tick-flip {
+   border-radius:0.12em !important; 
+}
+.cddiv {
+    margin: 0 auto 0 auto;
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
+    max-width: 760px; 
+    width: 80%;
+}
+</style>
+
 <style>
   .bg-video {
     position: fixed;
@@ -17,7 +91,17 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: -2;
+    z-index: -3;
+  }
+
+  .bg-video .overlay2 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -2;	  
+    background: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,1) 100%);
   }
 
   .bg-video .overlay {
@@ -47,12 +131,33 @@
 </style>
 		
 	</header>
+<body>
 <div class="bg-video">
   <div class="overlay"></div>
+  <div class="overlay2"></div>
   <div id="player"></div>
 </div>
 
-<h1>Hello World</h1>
+<div class="tick cddiv" data-did-init="handleTickInit">
+
+    <div data-repeat="true" data-layout="horizontal fit" data-transform="preset(d, h, m, s) -> delay">
+
+        <div class="tick-group">
+
+            <div data-key="value" data-repeat="true" data-transform="pad(00) -> split -> delay">
+
+                <span data-view="flip"></span>
+
+            </div>
+
+            <span data-key="label" data-view="text" class="tick-label"></span>
+
+        </div>
+
+    </div>
+
+</div>
+</body>
 
 <script>
   // Load the IFrame Player API code asynchronously.
@@ -66,6 +171,7 @@
     player = new YT.Player('player', {
 	videoId: '77tjYcIOqlg',
 	playerVars: {
+	  playlist: '77tjYcIOqlg',
           autoplay: 1,        // Auto-play the video on load
           autohide: 1,
           disablekb: 1, 
@@ -73,13 +179,31 @@
           showinfo: 0,        // Hide the video title
           modestbranding: 1,  // Hide the Youtube Logo
           loop: 1,            // Run the video in a loop
-          fs: 0,              // Hide the full screen button
+          fs: 0,              // Hide the full screen button.
+	  mute: 1,
           autohide: 0,        // Hide video controls when playing
           rel: 0,
+
           enablejsapi: 1,
 	  origin: 'https://tunsant.github.io/'
 	}
     });
   }
+</script>
+<script>
+    function handleTickInit(tick) {
+
+        // create the countdown counter
+        var counter = Tick.count.down('2021-07-19T00:00:00+01:00');
+
+        counter.onupdate = function(value) {
+          tick.value = value;
+        };
+
+        counter.onended = function() {
+            // redirect, uncomment the next line
+            window.location = 'my-location.html'
+        };
+    }
 </script>
 </html>
